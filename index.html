@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <style>
+    * {
+      padding: 1px;
+      margin: 1px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1 style="text-align: center;"> CRUD OPERATIONS</h1>
+  <div class="row">
+    <div class="col-lg-12">
+      <form action='/addemp' method="post">
+        <div class="form-group">
+          <label for="Id">EMP ID</label>
+          <input type="text" class="form-control" id="_id" placeholder="Enter EMP ID">
+
+        </div>
+        <div class="form-group">
+          <label for="Name">Name</label>
+          <input type="text" class="form-control" id="name" placeholder=" Enter Name">
+        </div>
+
+        <div class="form-group">
+          <label for="Age">Age</label>
+          <input type="Age" class="form-control" id="age" placeholder="Enter Age">
+        </div>
+      </form>
+      <button onclick="fetchData()" class="btn btn-primary" id="insertbtn">Fetch</button>
+      <button onclick="addData()" class="btn btn-primary" id="insertbtn">ADD</button>
+      <button onclick="deleteData()" class="btn btn-primary" id="insertbtn">DELETE</button>
+      <button onclick="updateData()" class="btn btn-primary" id="insertbtn">UPDATE</button>
+    </div>
+
+  </div>
+  </div>
+
+  <script>
+    function fetchData() {
+
+      event.preventDefault();
+
+      fetch("http://localhost:2000/emps")
+
+        .then(res => {
+
+          return res.json()
+
+        })
+
+        .then(data => {
+
+          data.forEach(element => {
+
+            console.log(element)
+
+          });
+
+        })
+
+    }
+
+    function addData() {
+
+      // event.preventDefault();
+
+      const emp = {
+
+        "_id": document.getElementById("_id").value,
+
+        "name": document.getElementById("name").value,
+
+        "age": document.getElementById("age").value
+
+      }
+
+      fetch("http://localhost:2000/addemp", {
+
+        method: "POST",
+
+        headers: {
+
+          'Content-Type': 'application/json'
+
+        },
+
+        body: JSON.stringify(emp)
+
+      }).then((res) => {
+
+        console.log(res);
+
+      }).catch((err) => console.log(err))
+
+      alert("Inserted");
+
+    }
+
+    // function deleteData() {
+
+    // id = document.getElementById('_id').value;
+
+    // fetch('http://localhost:2000/deleteemp/' + id, {
+
+    // method: 'DELETE'
+
+    // }).then(res => {
+
+    // return res.json()
+
+    // }).then(data =>
+
+    // console.log(data)
+
+    // );
+
+    // }
+
+    function deleteData() {
+      id = document.getElementById("_id").value;
+
+      let result = fetch("http://localhost:2000/deleteemp/" + id, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        // body: JSON.stringify(emp)
+      }).then(data => data)
+      alert("Delete the record");
+    }
+
+    function updateData() {
+
+      const emp = {
+        "_id": document.getElementById("_id").value,
+
+        "name": document.getElementById("name").value,
+
+        "age": document.getElementById("age").value
+
+      }
+
+      id = document.getElementById("_id").value,
+
+        fetch("http://localhost:2000/updateemp/" + id, {
+
+          method: "PUT",
+
+          headers: {
+
+            'Content-Type': 'application/json'
+
+          },
+
+          body: JSON.stringify(emp)
+
+        })
+
+          .then(res => {
+
+            console.log(res);
+
+          })
+
+          .catch(err => console.log(err))
+
+    }
+  </script>
+
+</body>
+
+</html>
